@@ -200,7 +200,12 @@ export default function App() {
             <br />
             <button onClick={flipOrientation}>Flip</button>
             <footer>
-                <div>Built by <a href='https://hwkerr.github.io'>Harrison Kerr</a> with React, Chessboard.jsx, and Chess.js</div>
+                <div>Built by <a href='https://hwkerr.github.io'>Harrison Kerr</a> with
+                    React,
+                    Chessboard.jsx,
+                    Chess.js, and
+                    use-sound
+                </div>
             </footer>
         </div>
     );
