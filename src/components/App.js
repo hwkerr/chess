@@ -1,5 +1,7 @@
 import './App.css';
 import React, { useState, useEffect, useRef } from 'react';
+import Grid from '@material-ui/core/Grid';
+
 import * as Chess from "chess.js";
 import Chessboard from 'chessboardjsx';
 import Import from './Import';
@@ -7,6 +9,7 @@ import Import from './Import';
 import useSound from 'use-sound';
 import moveSfx from '../sound/thump1.wav';
 import takeSfx from '../sound/thump2.wav';
+import MoveHistory from './MoveHistory';
 
 export default function App() {
     const [orientation, setOrientation] = useState('white')
@@ -20,10 +23,6 @@ export default function App() {
     useEffect(() => {
         game.current = new Chess();
     }, []);
-
-    useEffect(() => {
-        // console.log('Render');
-    });
 
     const importPosition = (fen) => {
         const validation = game.current.validate_fen(fen)
@@ -110,12 +109,12 @@ export default function App() {
         }
     };
 
+    // TODO doesn't show last move styling when a square is right-clicked
     const onSquareRightClick = square => {
         setSquareStyles({ [square]: { backgroundColor: "deepPink" } });
     }
 
     const squareStyling = (selectedSquare, move=undefined) => {
-        console.log('get square styling', move);
         let styling = {};
 
         // show selected piece highlighting
@@ -140,8 +139,6 @@ export default function App() {
         if (lastMove) {
             const sourceSquare = lastMove.from;
             const targetSquare = lastMove.to;
-
-            console.log('last move:', sourceSquare, targetSquare);
 
             styling[sourceSquare] = { backgroundColor: "rgba(0, 200, 0, 0.3)" };
             styling[targetSquare] = { backgroundColor: "rgba(0, 200, 0, 0.3)" };
@@ -177,28 +174,35 @@ export default function App() {
     return (
         <div className="App" style={{ width: '70%', margin: 'auto' }}>
             <h1>Chess</h1>
-            <Chessboard
-                position={position}
-                orientation={orientation}
-                width={600}
-                onDrop={onDrop}
-                onMouseOverSquare={onMouseOverSquare}
-                onMouseOutSquare={onMouseOutSquare}
-                boardStyle={{
-                    borderRadius: "5px",
-                    boxShadow: `0 5px 15px rgba(0, 0, 0, 0.5)`,
-                    cursor: 'pointer'
-                }}
-                squareStyles={squareStyles}
-                dropSquareStyle={dropSquareStyle}
-                onDragOverSquare={onDragOverSquare}
-                onSquareClick={onSquareClick}
-                onSquareRightClick={onSquareRightClick}
-            />
-            <br />
-            <Import importPosition={importPosition} />
-            <br />
-            <button onClick={flipOrientation}>Flip</button>
+            <Grid container spacing={3}>
+                <Grid item xs={6}>
+                    <Chessboard
+                        position={position}
+                        orientation={orientation}
+                        width={600}
+                        onDrop={onDrop}
+                        onMouseOverSquare={onMouseOverSquare}
+                        onMouseOutSquare={onMouseOutSquare}
+                        boardStyle={{
+                            borderRadius: "5px",
+                            boxShadow: `0 5px 15px rgba(0, 0, 0, 0.5)`,
+                            cursor: 'pointer'
+                        }}
+                        squareStyles={squareStyles}
+                        dropSquareStyle={dropSquareStyle}
+                        onDragOverSquare={onDragOverSquare}
+                        onSquareClick={onSquareClick}
+                        onSquareRightClick={onSquareRightClick}
+                    />
+                    <br />
+                    <Import importPosition={importPosition} />
+                    <br />
+                    <button onClick={flipOrientation}>Flip</button>
+                </Grid>
+                <Grid item xs={3}>
+                    <MoveHistory history={history} />
+                </Grid>
+            </Grid>
             <footer>
                 <div>Built by <a href='https://hwkerr.github.io'>Harrison Kerr</a> with
                     React,

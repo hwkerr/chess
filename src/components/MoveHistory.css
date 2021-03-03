@@ -1,0 +1,49 @@
+table {
+    width: 100%;
+    text-align: left;
+    border-spacing: 0px;
+    border-top: 1px solid darkgray;
+    table-layout: fixed;
+}
+
+td {
+    padding: 0.25rem 0;
+    font-weight: 500;
+}
+
+td.move {
+    padding-left: 1rem;
+    cursor: pointer;
+}
+
+td.rowTurn {
+    background-color: #4C4742;
+    color: darkgray;
+    border-right: 1px solid darkgray;
+    width: 4rem;
+    text-align: center;
+}
+
+td.selected.move {
+    background-color: #71B374;
+    font-weight: 800;
+}
+
+td.move:hover {
+    background-color: #32c832;
+    font-weight: 800;
+}
+
+.box {
+    padding: 1rem 0;
+    border-radius: 3px;
+    box-shadow: 0px 0px 10px  black;
+    background-color: #8C8A93;
+    color: black;
+    min-height: 500px;
+}
+
+.header {
+    padding: 0 1rem 1rem 1rem;
+    margin: 0;
+}
