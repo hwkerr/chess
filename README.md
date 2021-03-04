@@ -1,3 +1,17 @@
+# Chess App
+
+As I continue to work on this app, I hope to work towards building a fully functioning chess board like what is available on Chess.com or lichess.org
+and eventually add some new features of my own.
+The following npm packages have significantly helped me in this project:
+
+React
+Chessboard.jsx
+Chess.js
+use-sound
+Material-UI
+
+-----
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

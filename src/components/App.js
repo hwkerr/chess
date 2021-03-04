@@ -18,6 +18,7 @@ export default function App() {
     const [squareStyles, setSquareStyles] = useState({});
     const [pieceSquare, setPieceSquare] = useState('');
     const [dropSquareStyle, setDropSquareStyle] = useState({});
+    const [markedSquares, setMarkedSquares] = useState([]);
 
     const game = useRef(null);
     useEffect(() => {
@@ -74,6 +75,8 @@ export default function App() {
 
     // central squares get diff dropSquareStyles
     const onDragOverSquare = square => {
+        if (markedSquares.length)
+            setMarkedSquares([]);
         setDropSquareStyle(
             square === "e4" || square === "d4" || square === "e5" || square === "d5"
                 ? { backgroundColor: "cornFlowerBlue" }
@@ -82,6 +85,8 @@ export default function App() {
     };
 
     const onSquareClick = square => {
+        if (markedSquares.length)
+            setMarkedSquares([]);
         if (pieceSquare === square) {
             setPieceSquare('');
             setSquareStyles(squareStyling(''));
@@ -111,8 +116,33 @@ export default function App() {
 
     // TODO doesn't show last move styling when a square is right-clicked
     const onSquareRightClick = square => {
-        setSquareStyles({ [square]: { backgroundColor: "deepPink" } });
-    }
+        let updatedMarkedSquares;
+        if (markedSquares.includes(square)) {
+            updatedMarkedSquares = markedSquares.filter(el => el !== square);
+            setMarkedSquares(updatedMarkedSquares);
+        } else {
+            updatedMarkedSquares = [...markedSquares, square];
+            setMarkedSquares(updatedMarkedSquares);
+        }
+        setSquareStyles(
+            combineSquareStyling(
+                squareStyling(''),
+                updatedMarkedSquares.reduce((styleObj, currentSquare) => {
+                    return {
+                        ...styleObj,
+                        [currentSquare]: { backgroundColor: "rgba(205, 92, 92, 0.8)" }
+                    }
+                }, {})
+            )
+        );
+    };
+
+    const combineSquareStyling = (styleObj1, styleObj2) => {
+        return {
+            ...styleObj1,
+            ...styleObj2
+        };
+    };
 
     const squareStyling = (selectedSquare, move=undefined) => {
         let styling = {};
@@ -204,11 +234,8 @@ export default function App() {
                 </Grid>
             </Grid>
             <footer>
-                <div>Built by <a href='https://hwkerr.github.io'>Harrison Kerr</a> with
-                    React,
-                    Chessboard.jsx,
-                    Chess.js, and
-                    use-sound
+                <div>
+                    Built by <a href='https://hwkerr.github.io'>Harrison Kerr</a>
                 </div>
             </footer>
         </div>

@@ -1,0 +1,11 @@
+Move History
+- allow move navigation
+    - arrow-keys and clicking moves allow user to see an earlier board position
+
+Add status indicators
+- check
+- checkmate
+- stalemate
+- highlight capturable pieces differently
+
+Arrows
