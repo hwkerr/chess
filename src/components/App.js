@@ -28,8 +28,12 @@ export default function App() {
     const importPosition = (fen) => {
         const validation = game.current.validate_fen(fen)
         console.log('Import:', validation);
-        if (validation.valid)
+        if (validation.valid) {
+            setHistory([]);
+            setSquareStyles({});
+            game.current.load(fen);
             setPosition(fen);
+        }
         return validation;
     };
 

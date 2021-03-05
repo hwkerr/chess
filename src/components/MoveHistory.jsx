@@ -16,21 +16,27 @@ export default function MoveHistory({ history }) {
         return history.map((move, i, history) => {
             const turn = Math.floor(i/2) + 1;
             if (move.color === 'b') {
-                const whiteMove = history[i-1].san;
+                console.log('history', history, i);
+                const whiteMove = i > 1 ? history[i-1].san : null;
                 const blackMove = move.san;
+                const whiteClassNames = (whiteMove === null
+                    ? 'empty-move'
+                    : (i-1 === selectedMove ? 'selected' : '') + ' move');
+                const blackClassNames = (i === selectedMove ? 'selected' : '') + ' move';
                 return (
                     <tr key={i}>
                         <td className='rowTurn'>{turn}</td>
-                        <td className={`${i-1 === selectedMove ? 'selected' : ''} move`} onClick={() => goToHistoryIndex(i-1)}>{whiteMove}</td>
-                        <td className={`${i === selectedMove ? 'selected' : ''} move`} onClick={() => goToHistoryIndex(i)}>{blackMove}</td>
+                        <td className={whiteClassNames} onClick={() => whiteMove && goToHistoryIndex(i-1)}>{whiteMove || '...'}</td>
+                        <td className={blackClassNames} onClick={() => blackMove && goToHistoryIndex(i)}>{blackMove}</td>
                     </tr>
                 );
             } else if (move.color === 'w' && i === lastMove) {
                 const whiteMove = move.san;
+                const whiteClassNames = `${i === selectedMove ? 'selected' : ''} move`;
                 return (
                     <tr key={i}>
                         <td className='rowTurn'>{turn}</td>
-                        <td className={`${i === selectedMove ? 'selected' : ''} move`} onClick={() => goToHistoryIndex(i)}>{whiteMove}</td>
+                        <td className={whiteClassNames} onClick={() => goToHistoryIndex(i)}>{whiteMove}</td>
                         <td />
                     </tr>
                 );

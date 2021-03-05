@@ -11,11 +11,6 @@ td {
     font-weight: 500;
 }
 
-td.move {
-    padding-left: 1rem;
-    cursor: pointer;
-}
-
 td.rowTurn {
     background-color: #4C4742;
     color: darkgray;
@@ -24,13 +19,23 @@ td.rowTurn {
     text-align: center;
 }
 
-td.selected.move {
-    background-color: #71B374;
-    font-weight: 800;
+td.empty-move {
+    padding-left: 1rem;
+    cursor: default;
+}
+
+td.move {
+    padding-left: 1rem;
+    cursor: pointer;
 }
 
 td.move:hover {
     background-color: #32c832;
+    font-weight: 800;
+}
+
+td.selected.move {
+    background-color: #71B374;
     font-weight: 800;
 }
 
