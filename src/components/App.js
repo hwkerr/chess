@@ -232,8 +232,8 @@ export default function App() {
     return (
         <div className="App" onKeyDown={handleKeyDown} tabIndex="0">
             <h1>Chess</h1>
-            <Grid container spacing={3}>
-                <Grid item xs={6}>
+            <Grid container>
+                <div>
                     <Chessboard
                         position={position}
                         orientation={orientation}
@@ -256,14 +256,14 @@ export default function App() {
                     <Import importPosition={importPosition} />
                     <br />
                     <button onClick={flipOrientation}>Flip</button>
-                </Grid>
-                <Grid item xs={3}>
+                </div>
+                <div style={{ position: 'absolute', left: '1000px' }}>
                     <MoveHistory
                         history={history}
                         selectedMove={selectedMove}
                         onClickMove={goToMove}
                     />
-                </Grid>
+                </div>
             </Grid>
             <footer>
                 <div>
