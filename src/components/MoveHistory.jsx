@@ -1,23 +1,14 @@
 import './MoveHistory.css';
-import {React, useState, useEffect} from 'react';
+import React from 'react';
 
-export default function MoveHistory({ history }) {
-    const [lastMove, setLastMove] = useState(-1);
-    const [selectedMove, setSelectedMove] = useState(-1);
-
-    useEffect(() => {
-        if (history.length) {
-            setLastMove(history.length-1);
-            setSelectedMove(history.length-1);
-        }
-    }, [history]);
+export default function MoveHistory({ history, selectedMove, onClickMove }) {
     
     const renderHistoryTable = () => {
         return history.map((move, i, history) => {
             const turn = Math.floor(i/2) + 1;
+            const lastMove = history.length && history.length-1;
             if (move.color === 'b') {
-                console.log('history', history, i);
-                const whiteMove = i > 1 ? history[i-1].san : null;
+                const whiteMove = i >= 1 ? history[i-1].san : null;
                 const blackMove = move.san;
                 const whiteClassNames = (whiteMove === null
                     ? 'empty-move'
@@ -26,8 +17,8 @@ export default function MoveHistory({ history }) {
                 return (
                     <tr key={i}>
                         <td className='rowTurn'>{turn}</td>
-                        <td className={whiteClassNames} onClick={() => whiteMove && goToHistoryIndex(i-1)}>{whiteMove || '...'}</td>
-                        <td className={blackClassNames} onClick={() => blackMove && goToHistoryIndex(i)}>{blackMove}</td>
+                        <td className={whiteClassNames} onClick={() => whiteMove && clickMove(i-1)}>{whiteMove || '...'}</td>
+                        <td className={blackClassNames} onClick={() => blackMove && clickMove(i)}>{blackMove}</td>
                     </tr>
                 );
             } else if (move.color === 'w' && i === lastMove) {
@@ -36,7 +27,7 @@ export default function MoveHistory({ history }) {
                 return (
                     <tr key={i}>
                         <td className='rowTurn'>{turn}</td>
-                        <td className={whiteClassNames} onClick={() => goToHistoryIndex(i)}>{whiteMove}</td>
+                        <td className={whiteClassNames} onClick={() => clickMove(i)}>{whiteMove}</td>
                         <td />
                     </tr>
                 );
@@ -44,9 +35,9 @@ export default function MoveHistory({ history }) {
         });
     }
 
-    const goToHistoryIndex = (historyIndex) => {
+    const clickMove = (historyIndex) => {
         console.log(historyIndex, history.slice(0, historyIndex+1).map(move => move.san));
-        setSelectedMove(historyIndex);
+        onClickMove(historyIndex);
     }
 
     return (

@@ -15,15 +15,23 @@ export default function App() {
     const [orientation, setOrientation] = useState('white')
     const [position, setPosition] = useState('start');
     const [history, setHistory] = useState([]);
-    const [squareStyles, setSquareStyles] = useState({});
+    const [selectedMove, setSelectedMove] = useState(-1);
+
     const [pieceSquare, setPieceSquare] = useState('');
+
+    const [squareStyles, setSquareStyles] = useState({});
     const [dropSquareStyle, setDropSquareStyle] = useState({});
     const [markedSquares, setMarkedSquares] = useState([]);
+
 
     const game = useRef(null);
     useEffect(() => {
         game.current = new Chess();
     }, []);
+
+    useEffect(() => {
+        setSelectedMove(history.length-1);
+    }, [history]);
 
     const importPosition = (fen) => {
         const validation = game.current.validate_fen(fen)
@@ -36,6 +44,11 @@ export default function App() {
         }
         return validation;
     };
+
+    const goToMove = (historyIndex) => {
+        
+        setSelectedMove(historyIndex);
+    }
 
     const flipOrientation = () => {
         if (orientation === 'white') setOrientation('black');
@@ -118,7 +131,6 @@ export default function App() {
         }
     };
 
-    // TODO doesn't show last move styling when a square is right-clicked
     const onSquareRightClick = square => {
         let updatedMarkedSquares;
         if (markedSquares.includes(square)) {
@@ -181,6 +193,18 @@ export default function App() {
         return styling;
     };
 
+    const handleKeyDown = event => {
+        if (event.key === 'ArrowLeft') {
+            if (selectedMove > 0)
+                goToMove(selectedMove-1);
+        } else if (event.key === 'ArrowRight') {
+            if (selectedMove+1 < history.length)
+                goToMove(selectedMove+1);
+        } else if (event.key === '0') {
+            goToMove(0);
+        }
+    }
+
     const playMoveSound = move => {
         if (move == null)
             return;
@@ -206,7 +230,7 @@ export default function App() {
     );
 
     return (
-        <div className="App" style={{ width: '70%', margin: 'auto' }}>
+        <div className="App" onKeyDown={handleKeyDown} tabIndex="0">
             <h1>Chess</h1>
             <Grid container spacing={3}>
                 <Grid item xs={6}>
@@ -234,7 +258,11 @@ export default function App() {
                     <button onClick={flipOrientation}>Flip</button>
                 </Grid>
                 <Grid item xs={3}>
-                    <MoveHistory history={history} />
+                    <MoveHistory
+                        history={history}
+                        selectedMove={selectedMove}
+                        onClickMove={goToMove}
+                    />
                 </Grid>
             </Grid>
             <footer>
