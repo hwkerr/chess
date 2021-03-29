@@ -36,7 +36,7 @@ export default function MoveHistory({ history, selectedMove, onClickMove }) {
     }
 
     const clickMove = (historyIndex) => {
-        console.log(historyIndex, history.slice(0, historyIndex+1).map(move => move.san));
+        // console.log(historyIndex, history.slice(0, historyIndex+1).map(move => move.san));
         onClickMove(historyIndex);
     }
 

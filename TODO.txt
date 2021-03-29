@@ -1,4 +1,4 @@
-Current: move history navigation
+Current: move history navigation (I fixed a bug in chessboardjsx, waiting for maintainer to update on npm)
 
 Show legal move indicators when dragging a piece
 

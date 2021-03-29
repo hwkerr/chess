@@ -15,6 +15,7 @@ export default function App() {
     const [orientation, setOrientation] = useState('white')
     const [position, setPosition] = useState('start');
     const [history, setHistory] = useState([]);
+    const [fenHistory, setFenHistory] = useState(['rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1']);
     const [selectedMove, setSelectedMove] = useState(-1);
 
     const [pieceSquare, setPieceSquare] = useState('');
@@ -29,10 +30,6 @@ export default function App() {
         game.current = new Chess();
     }, []);
 
-    useEffect(() => {
-        setSelectedMove(history.length-1);
-    }, [history]);
-
     const importPosition = (fen) => {
         const validation = game.current.validate_fen(fen)
         console.log('Import:', validation);
@@ -45,9 +42,33 @@ export default function App() {
         return validation;
     };
 
-    const goToMove = (historyIndex) => {
+    const jumpToMove = (historyIndex) => {
+        console.log(fenHistory[historyIndex+1]);
+        setPosition('8/8/8/8/8/8/8/8 w - - 0 1'); // reset first
+        setTimeout(() => {
+            setPosition(fenHistory[historyIndex+1]);
+
+            setPieceSquare('');
+            setSelectedMove(historyIndex);
+            
+            const move = historyIndex >= 0 ? history[historyIndex] : undefined;
+            setSquareStyles(squareStyling('', move));
+        }, 1);
+    }
+
+    const addMove = (move) => {
+        setPosition(game.current.fen());
         
-        setSelectedMove(historyIndex);
+        const newHistory = game.current.history({ verbose: true })
+        setHistory(newHistory);
+        const newFen = game.current.fen();
+        setFenHistory([...fenHistory, newFen])
+        
+        setPieceSquare('');
+        setSelectedMove(newHistory.length-1);
+        
+        setSquareStyles(squareStyling('', move));
+        playMoveSound(move);
     }
 
     const flipOrientation = () => {
@@ -66,11 +87,8 @@ export default function App() {
         // illegal move
         if (move === null)
             return;
-        setPosition(game.current.fen());
-        setHistory(game.current.history({ verbose: true }));
-        setSquareStyles(squareStyling('', move));
-        setPieceSquare('');
-        playMoveSound(move);
+        else
+            addMove(move);
     };
 
     const getLegalMoves = square => {
@@ -121,12 +139,7 @@ export default function App() {
             }
             // legal move
             else if (move !== null) {
-                setPosition(game.current.fen());
-                setHistory(game.current.history({ verbose: true }));
-
-                setPieceSquare('');
-                setSquareStyles(squareStyling('', move));
-                playMoveSound(move);
+                addMove(move);
             }
         }
     };
@@ -180,8 +193,7 @@ export default function App() {
         }
     
         // show last-move highlighting
-        const lastMove = move ? move
-            : history.length ? history[history.length - 1] : null;
+        const lastMove = move;
         if (lastMove) {
             const sourceSquare = lastMove.from;
             const targetSquare = lastMove.to;
@@ -195,13 +207,13 @@ export default function App() {
 
     const handleKeyDown = event => {
         if (event.key === 'ArrowLeft') {
-            if (selectedMove > 0)
-                goToMove(selectedMove-1);
+            if (selectedMove >= 0)
+                jumpToMove(selectedMove-1);
         } else if (event.key === 'ArrowRight') {
             if (selectedMove+1 < history.length)
-                goToMove(selectedMove+1);
+                jumpToMove(selectedMove+1);
         } else if (event.key === '0') {
-            goToMove(0);
+            jumpToMove(0);
         }
     }
 
@@ -261,7 +273,7 @@ export default function App() {
                     <MoveHistory
                         history={history}
                         selectedMove={selectedMove}
-                        onClickMove={goToMove}
+                        onClickMove={jumpToMove}
                     />
                 </div>
             </Grid>
