@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/chess/static/css/main.f4325239.chunk.css",
+    "main.js": "/chess/static/js/main.1416d932.chunk.js",
+    "main.js.map": "/chess/static/js/main.1416d932.chunk.js.map",
+    "runtime-main.js": "/chess/static/js/runtime-main.6cbcf88f.js",
+    "runtime-main.js.map": "/chess/static/js/runtime-main.6cbcf88f.js.map",
+    "static/js/2.bbfb15db.chunk.js": "/chess/static/js/2.bbfb15db.chunk.js",
+    "static/js/2.bbfb15db.chunk.js.map": "/chess/static/js/2.bbfb15db.chunk.js.map",
+    "static/js/3.437f2d94.chunk.js": "/chess/static/js/3.437f2d94.chunk.js",
+    "static/js/3.437f2d94.chunk.js.map": "/chess/static/js/3.437f2d94.chunk.js.map",
+    "index.html": "/chess/index.html",
+    "static/css/main.f4325239.chunk.css.map": "/chess/static/css/main.f4325239.chunk.css.map",
+    "static/js/2.bbfb15db.chunk.js.LICENSE.txt": "/chess/static/js/2.bbfb15db.chunk.js.LICENSE.txt",
+    "static/js/3.437f2d94.chunk.js.LICENSE.txt": "/chess/static/js/3.437f2d94.chunk.js.LICENSE.txt",
+    "static/media/thump1.5dc21a1c.wav": "/chess/static/media/thump1.5dc21a1c.wav",
+    "static/media/thump2.a452eeaf.wav": "/chess/static/media/thump2.a452eeaf.wav"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.6cbcf88f.js",
+    "static/js/2.bbfb15db.chunk.js",
+    "static/css/main.f4325239.chunk.css",
+    "static/js/main.1416d932.chunk.js"
+  ]
+}
