@@ -42,6 +42,10 @@ export default function App() {
         return validation;
     };
 
+    const isShowingLatestMove = () => {
+        return (selectedMove+1 === history.length);
+    }
+    
     const jumpToMove = (historyIndex) => {
         console.log(fenHistory[historyIndex+1]);
         
@@ -75,6 +79,8 @@ export default function App() {
     }
 
     const onDrop = ({ sourceSquare, targetSquare }) => {
+        if (!isShowingLatestMove()) return;
+
         // see if the move is legal
         const move = game.current.move({
             from: sourceSquare,
@@ -124,7 +130,9 @@ export default function App() {
             setPieceSquare('');
             setSquareStyles(squareStyling(''));
         } else {
-            let move = game.current.move({
+            if (!isShowingLatestMove()) return;
+            
+            const move = game.current.move({
                 from: pieceSquare,
                 to: square,
                 promotion: "q" // always promote to a queen for example simplicity

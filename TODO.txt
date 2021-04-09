@@ -1,4 +1,4 @@
-Current: move history navigation (I fixed a bug in chessboardjsx, waiting for maintainer to update on npm)
+Current: move history navigation allows users to make a move on the board when the board is not showing the current position
 
 Show legal move indicators when dragging a piece
 
