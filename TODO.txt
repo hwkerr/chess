@@ -1,15 +1,19 @@
-Current: add more keyboard shortcuts for existing actions
+Current: Add an import feature to load a full game from PGN
 
-Show legal move indicators when dragging a piece
+Add Stockfish analysis
 
-Move History
-- allow move navigation
-    - user can see an earlier board position by selecting a different move in the Move History
+Add move variations
+Add graph of variations
 
-Add status indicators
-- check
-- checkmate
-- stalemate
-- highlight capturable pieces differently
 
-Arrows
+Use Chessground (board developed for lichess) instead of Chessboardjsx
+    Show legal move indicators when dragging a piece
+    Add status indicators
+    - check
+    - checkmate
+    - stalemate
+    - highlight capturable pieces differently
+    Arrows
+
+
+Chessboardjsx bug: when black's queen or rook captures a non-pawn white piece, the [capturing] black piece has its color messed up until it is moved again

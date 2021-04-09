@@ -1,21 +1,23 @@
-import './App.css';
 import React, { useState, useEffect, useRef } from 'react';
+import './App.css';
 import Grid from '@material-ui/core/Grid';
 
 import * as Chess from "chess.js";
 import Chessboard from 'chessboardjsx';
-import Import from './Import';
-
+import { Pgn } from 'cm-pgn';
 import useSound from 'use-sound';
+
 import moveSfx from '../sound/thump1.wav';
 import takeSfx from '../sound/thump2.wav';
+import Import from './Import';
 import MoveHistory from './MoveHistory';
+
+const DEFAULT_BOARD_POSITION = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
 
 export default function App() {
     const [orientation, setOrientation] = useState('white')
     const [position, setPosition] = useState('start');
     const [history, setHistory] = useState([]);
-    const [fenHistory, setFenHistory] = useState(['rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1']);
     const [selectedMove, setSelectedMove] = useState(-1);
 
     const [pieceSquare, setPieceSquare] = useState('');
@@ -30,24 +32,43 @@ export default function App() {
         game.current = new Chess();
     }, []);
 
-    const importPosition = (fen) => {
-        const validation = game.current.validate_fen(fen)
-        console.log('Import:', validation);
-        if (validation.valid) {
+    const importFEN = (fen) => {
+        const { valid } = game.current.validate_fen(fen)
+        console.log('Import FEN ' + (valid ? 'success' : 'failed'));
+        if (valid) {
             setHistory([]);
             setSquareStyles({});
             game.current.load(fen);
             setPosition(fen);
         }
-        return validation;
+        return valid;
     };
+
+    const importPGN = (pgnString) => {
+        const valid = game.current.load_pgn(pgnString);
+        const pgnHistory = new Pgn(pgnString).history.moves;
+        console.log('Import PGN ' + (valid ? 'success' : 'failed'));
+        if (valid) {
+            setHistory(pgnHistory);
+            setSquareStyles({});
+            setPosition(pgnHistory[pgnHistory.length-1].fen);
+            setSelectedMove(pgnHistory.length-1);
+
+            const move = pgnHistory[pgnHistory.length-1];
+            setSquareStyles(squareStyling('', move));
+        }
+        return valid;
+    }
 
     const isShowingLatestMove = () => {
         return (selectedMove+1 === history.length);
     }
     
-    const jumpToMove = (historyIndex) => {        
-        setPosition(fenHistory[historyIndex+1]);
+    const jumpToMove = (historyIndex) => {
+        if (historyIndex < 0)
+            setPosition(DEFAULT_BOARD_POSITION);
+        else
+            setPosition(history[historyIndex].fen);
 
         setPieceSquare('');
         setSelectedMove(historyIndex);
@@ -59,16 +80,25 @@ export default function App() {
     const addMove = (move) => {
         setPosition(game.current.fen());
         
-        const newHistory = game.current.history({ verbose: true })
-        setHistory(newHistory);
+        const newHistory = game.current.history({ verbose: true });
         const newFen = game.current.fen();
-        setFenHistory([...fenHistory, newFen])
+        addToHistory(newHistory[newHistory.length-1], newFen);
         
         setPieceSquare('');
         setSelectedMove(newHistory.length-1);
         
         setSquareStyles(squareStyling('', move));
         playMoveSound(move);
+    }
+
+    const addToHistory = (lastMoveInHistory, newFen) => {
+        setHistory(prev => [
+            ...prev,
+            {
+                ...lastMoveInHistory,
+                fen: newFen
+            }
+        ]);
     }
 
     const flipOrientation = () => {
@@ -273,7 +303,7 @@ export default function App() {
                         onSquareRightClick={onSquareRightClick}
                     />
                     <br />
-                    <Import importPosition={importPosition} />
+                    <Import importFEN={importFEN} importPGN={importPGN} />
                     <br />
                     <button onClick={flipOrientation}>Flip</button>
                 </div>
