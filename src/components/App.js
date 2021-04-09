@@ -44,16 +44,14 @@ export default function App() {
 
     const jumpToMove = (historyIndex) => {
         console.log(fenHistory[historyIndex+1]);
-        setPosition('8/8/8/8/8/8/8/8 w - - 0 1'); // reset first
-        setTimeout(() => {
-            setPosition(fenHistory[historyIndex+1]);
+        
+        setPosition(fenHistory[historyIndex+1]);
 
-            setPieceSquare('');
-            setSelectedMove(historyIndex);
-            
-            const move = historyIndex >= 0 ? history[historyIndex] : undefined;
-            setSquareStyles(squareStyling('', move));
-        }, 1);
+        setPieceSquare('');
+        setSelectedMove(historyIndex);
+        
+        const move = historyIndex >= 0 ? history[historyIndex] : undefined;
+        setSquareStyles(squareStyling('', move));
     }
 
     const addMove = (move) => {
