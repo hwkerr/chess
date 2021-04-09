@@ -1,11 +1,9 @@
-Current: move history navigation allows users to make a move on the board when the board is not showing the current position
+Current: add more keyboard shortcuts for existing actions
 
 Show legal move indicators when dragging a piece
 
 Move History
 - allow move navigation
-    - keyboard arrow-keys change the selected move in the Move History
-    - keyboard 0 goes to first position in history
     - user can see an earlier board position by selecting a different move in the Move History
 
 Add status indicators

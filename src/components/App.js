@@ -46,9 +46,7 @@ export default function App() {
         return (selectedMove+1 === history.length);
     }
     
-    const jumpToMove = (historyIndex) => {
-        console.log(fenHistory[historyIndex+1]);
-        
+    const jumpToMove = (historyIndex) => {        
         setPosition(fenHistory[historyIndex+1]);
 
         setPieceSquare('');
@@ -218,8 +216,12 @@ export default function App() {
         } else if (event.key === 'ArrowRight') {
             if (selectedMove+1 < history.length)
                 jumpToMove(selectedMove+1);
-        } else if (event.key === '0') {
-            jumpToMove(0);
+        } else if (event.key == 'ArrowUp' || event.key === '0') {
+            jumpToMove(-1);
+        } else if (event.key == 'ArrowDown') {
+            jumpToMove(history.length-1);
+        } else if (event.key == 'f') {
+            flipOrientation();
         }
     }
 
